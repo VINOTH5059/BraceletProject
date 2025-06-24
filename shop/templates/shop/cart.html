@@ -1,0 +1,89 @@
+{% extends 'shop/layouts/base.html' %}
+{% block content %}
+<section class="bg-light py-4 my-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mb-3">Cart Items</h4>
+        <hr style="border-color:#b8bfc2;">
+      </div>
+    </div>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Product Name</th>
+          <th>Quantity</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody id="cart-table-body"></tbody>
+    </table>
+
+    <div id="whatsapp-button-container" style="display:none;" class="my-3 d-flex align-items-center">
+        <a id="whatsappOrderBtn1" href="#" target="_blank" class="btn btn-success me-2 d-flex align-items-center">
+          <i class="fa fa-whatsapp fs-1 me-2"></i> Order via (9342330414)
+        </a>
+        <a id="whatsappOrderBtn2" href="#" target="_blank" class="btn btn-success d-flex align-items-center">
+          <i class="fa fa-whatsapp fs-1 me-2"></i> Order (8489341238)
+        </a>
+      </div>
+      
+
+    <p id="empty-cart-message">Your cart is empty.</p>
+  </div>
+</section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const tbody = document.getElementById("cart-table-body");
+    const emptyMsg = document.getElementById("empty-cart-message");
+    const whatsappBtnContainer = document.getElementById("whatsapp-button-container");
+    const whatsappBtn1 = document.getElementById("whatsappOrderBtn1");
+    const whatsappBtn2 = document.getElementById("whatsappOrderBtn2");
+
+    if (cart.length > 0) {
+      emptyMsg.style.display = "none";
+      whatsappBtnContainer.style.display = "block";
+      tbody.innerHTML = "";
+
+      let message = `Hello, I want to order:\n`;
+
+      cart.forEach(item => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td><img src="${item.image}" alt="${item.name}" width="60" height="60"></td>
+          <td>${item.name}</td>
+          <td>${item.qty}</td>
+          <td>
+            <button class="btn btn-danger btn-sm btn-remove" data-id="${item.id}">
+              <i class="fa fa-trash"></i> Remove
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+
+        message += `- *${item.name}* (Qty: ${item.qty})\nImage: ${window.location.origin}${item.image}\n\n`;
+      });
+
+      const encodedMessage = encodeURIComponent(message.trim());
+      const phoneNumber1 = "9342330414";
+      const phoneNumber2 = "8489341238";
+
+      whatsappBtn1.href = `https://wa.me/${phoneNumber1}?text=${encodedMessage}`;
+      whatsappBtn2.href = `https://wa.me/${phoneNumber2}?text=${encodedMessage}`;
+
+      document.querySelectorAll(".btn-remove").forEach(btn => {
+        btn.addEventListener("click", function () {
+          const id = parseInt(this.dataset.id);
+          const updatedCart = cart.filter(item => item.id !== id);
+          localStorage.setItem("cart", JSON.stringify(updatedCart));
+          location.reload();
+        });
+      });
+    }
+  });
+</script>
+{% endblock %}

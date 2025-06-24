@@ -1,0 +1,221 @@
+{% extends 'shop/layouts/base.html' %}
+{% load static %}
+{% block content %}
+<section class="bg-light py-4 my-5">
+    <div class="container" id="product-details-container">
+        <!-- Product details will be injected here by JS -->
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const imageBase = "/static/image/";
+     // ✅ Read product ID from URL like /product/3/
+     const urlParts = window.location.pathname.split('/');
+    const productId = parseInt(urlParts[urlParts.length - 2]);
+
+    const products = [
+    {
+        id: 1,
+        name: "Neon Glow Plastic Bracelet",
+        image: "product1.jpeg",
+        description: "A vibrant, light-weight bracelet that glows under UV light — perfect for parties and festivals",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 2,
+        name: "Twist-Tie Bangle Set",
+        image: "product2.jpeg",
+        description: "A set of flexible bangles with a twisted design, offering a unique texture and modern style.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 3,
+        name: "Translucent Charm Bracelet",
+        image: "product3.jpeg",
+        description: "Clear plastic links with embedded mini charms — stylish and fun for casual wear",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 4,
+        name: "Floral Embossed Plastic Bracelet",
+        image: "product4.jpeg",
+        description: "Elegant plastic bracelet with raised floral patterns, ideal for spring or garden-themed outfits.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 5,
+        name: "Vintage Bubble Cuff",
+        image: "product5.jpeg",
+        description: "Chunky, retro-inspired cuff with a smooth, bubble-like surface for a bold fashion statement.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 6,
+        name: "Rainbow Bead Plastic Bracelet",
+        image: "product6.jpeg",
+        description: "Colorful plastic beads strung together to create a cheerful and youthful accessory.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 7,
+        name: "Glow-in-the-Dark Plastic Bracelet",
+        image: "product7.jpeg",
+        description: "Charges in daylight and glows after dark — fun for kids and night events.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 8,
+        name: "Smooth Finish Bangle Trio",
+        image: "product8.jpeg",
+        description: "A pack of three minimalistic plastic bangles with a smooth, glossy finish.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 9,
+        name: "Flexible Spiral Wristband",
+        image: "product9.jpeg",
+        description: "Soft spiral design that stretches to fit all wrist sizes — a great everyday bracelet.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 10,
+        name: "Chunky Color Block Bracelet",
+        image: "product10.jpeg",
+        description: "Thick segments of plastic in bold contrasting colors for a modern geometric look.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 11,
+        name: "Snap-On Sporty Bracelet",
+        image: "product11.jpeg",
+        description: "Easy snap-on plastic bracelet with a sporty design, perfect for active teens.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 12,
+        name: "Polka Dot Plastic Bangle",
+        image: "product12.jpeg",
+        description: "Classic bangle with a glossy surface decorated in cute polka dots.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    },
+    {
+        id: 13,
+        name: "Mini Charm Link Bracelet",
+        image: "product13.jpeg",
+        description: "Lightweight linked bracelet with tiny dangling plastic charms for a playful touch.",
+        original_price: 120,
+        selling_price: 99,
+        quantity: 5
+    }
+];
+
+
+    const product = products.find(p => p.id === productId);
+
+    if (!product) {
+        document.getElementById("product-details-container").innerHTML = "<p>Product not found.</p>";
+        return;
+    }
+
+    const html = `
+        <div class="row">
+            <div class="col-md-6">
+                <img src="${imageBase + product.image}" alt="${product.name}" style="width:100%; max-width:600px; height:400px;">
+            </div>
+            <div class="col-md-6">
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <h6 class="text-danger">Current Price: Rs ${product.original_price}</h6>
+                <h5 class="text-primary">Offer Price: Rs ${product.selling_price}</h5>
+                <p class="text-info"><i class="fa fa-truck"></i> Delivery Price: Rs 50</p>
+                <div class="my-3">
+                    ${product.quantity > 0 ? `
+                    <div class="input-group" style="width:150px;">
+                        <button class="input-group-text bg-success text-light" id="btnMinus"><i class="fa fa-minus"></i></button>
+                        <input type="text" name="qty" id="txtQty" value="1" class="form-control text-center" />
+                        <button class="input-group-text bg-success text-light" id="btnPlus"><i class="fa fa-plus"></i></button>
+                    </div>
+                    <button class="btn btn-primary mt-3" id="btnCart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                    ` : `
+                    <button class="btn btn-secondary"><i class="fa fa-minus"></i> Out of Stock</button>
+                    `}
+                    <button class="btn btn-danger ms-2"><i class="fa fa-heart"></i></button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("product-details-container").innerHTML = html;
+
+    if (product.quantity > 0) {
+        const btnMinus = document.querySelector("#btnMinus");
+        const btnPlus = document.querySelector("#btnPlus");
+        const inputQty = document.querySelector("#txtQty");
+        const btnCart = document.querySelector("#btnCart");
+
+        btnPlus.addEventListener('click', function () {
+            let qty = parseInt(inputQty.value, 10);
+            qty = isNaN(qty) ? 1 : qty;
+            if (qty < 10) inputQty.value = ++qty;
+        });
+
+        btnMinus.addEventListener('click', function () {
+            let qty = parseInt(inputQty.value, 10);
+            qty = isNaN(qty) ? 1 : qty;
+            if (qty > 1) inputQty.value = --qty;
+        });
+
+        btnCart.addEventListener('click', function () {
+            let qty = parseInt(inputQty.value, 10);
+            if (qty > 0) {
+                const cartItem = {
+                    id: product.id,
+                    name: product.name,
+                    image: imageBase + product.image,
+                    qty: qty
+                };
+
+                let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                const existing = cart.find(i => i.id === cartItem.id);
+                if (existing) {
+                    existing.qty = qty;
+                } else {
+                    cart.push(cartItem);
+                }
+
+                localStorage.setItem("cart", JSON.stringify(cart));
+                alert(`Added ${qty} of "${product.name}" to cart.`);
+                window.location.href = "/cart/";
+            } else {
+                alert("Please enter a valid quantity.");
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

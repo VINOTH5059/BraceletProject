@@ -1,0 +1,152 @@
+{% extends 'shop/layouts/base.html'%}
+{% load static %}
+{% block title %}Saivelan Shop{% endblock title %}
+{% block content %}
+{% include 'shop/inc/slider.html' %}
+<section class="bg-light py-4 my-2">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4>collection</h4>
+                <hr style="border-color:#b8bfc2;">
+            </div>
+
+            <div id="product-list" class="row"></div>
+        </div>
+    </div>
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+    const productList = document.getElementById("product-list");
+    const imageBase = "/static/image/";  // Update if your path is different
+
+    const products = [
+        {
+            id: 1,
+            name: "Neon Glow Plastic Bracelet",
+            image: "product1.jpeg",
+            description: "A vibrant, light-weight bracelet that glows under UV light — perfect for parties and festivals",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 2,
+            name: "Twist-Tie Bangle Set",
+            image: "product2.jpeg",
+            description: "A set of flexible bangles with a twisted design, offering a unique texture and modern style.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 3,
+            name: "Translucent Charm Bracelet",
+            image: "product3.jpeg",
+            description: "Clear plastic links with embedded mini charms — stylish and fun for casual wear",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 4,
+            name: "Floral Embossed Plastic Bracelet",
+            image: "product4.jpeg",
+            description: "Elegant plastic bracelet with raised floral patterns, ideal for spring or garden-themed outfits.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 5,
+            name: "Vintage Bubble Cuff",
+            image: "product5.jpeg",
+            description: "Chunky, retro-inspired cuff with a smooth, bubble-like surface for a bold fashion statement.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 6,
+            name: "Rainbow Bead Plastic Bracelet",
+            image: "product6.jpeg",
+            description: "Colorful plastic beads strung together to create a cheerful and youthful accessory.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 7,
+            name: "Glow-in-the-Dark Plastic Bracelet",
+            image: "product7.jpeg",
+            description: "Charges in daylight and glows after dark — fun for kids and night events.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 8,
+            name: "Smooth Finish Bangle Trio",
+            image: "product8.jpeg",
+            description: "A pack of three minimalistic plastic bangles with a smooth, glossy finish.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 9,
+            name: "Flexible Spiral Wristband",
+            image: "product9.jpeg",
+            description: "Soft spiral design that stretches to fit all wrist sizes — a great everyday bracelet.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 10,
+            name: "Chunky Color Block Bracelet",
+            image: "product10.jpeg",
+            description: "Thick segments of plastic in bold contrasting colors for a modern geometric look.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 11,
+            name: "Snap-On Sporty Bracelet",
+            image: "product11.jpeg",
+            description: "Easy snap-on plastic bracelet with a sporty design, perfect for active teens.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 12,
+            name: "Polka Dot Plastic Bangle",
+            image: "product12.jpeg",
+            description: "Classic bangle with a glossy surface decorated in cute polka dots.",
+            original_price: 120,
+            selling_price: 99
+        },
+        {
+            id: 13,
+            name: "Mini Charm Link Bracelet",
+            image: "product13.jpeg",
+            description: "Lightweight linked bracelet with tiny dangling plastic charms for a playful touch.",
+            original_price: 120,
+            selling_price: 99
+        }
+    ];
+    products.forEach(item => {
+    const productCard = `
+        <div class="col-12 col-md-4 col-lg-3">
+            <a href="/product/${item.id}/" style="text-decoration: none; color: inherit;">
+                <div class="card my-3">
+                    <img src="${imageBase + item.image}" class="card-img-top image-height" alt="${item.name}">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">${item.name}</h5>
+                        <p class="card-text short-description">${item.description}</p>
+                        <p class="card-text">
+                            <span class="float-start old-price" style="text-decoration: line-through;">Rs: ${item.original_price}</span>
+                            <span class="float-end new-price">Rs: ${item.selling_price}</span>
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    `;
+    productList.insertAdjacentHTML("beforeend", productCard);
+});
+
+});
+</script>
+{% endblock %}
